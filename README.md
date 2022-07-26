@@ -31,7 +31,7 @@ of the following parts.
 3. The execution of cross-client testing is then performed using Hive. The hive framework simply performs the following.
 
 * For each client, for each testcase:
-   * Create genesis by combining 'pre' and 'genesisBlockHeader'.
+   * Create genesis by combining 'pre' and 'genesisBlockHeader'. // genesisBlockHeader跨链场景才使用吗
    * Create ruleset, according to testcase (Frontier, Homestead, Tangerine or Spurious), and set Hive `ENV` variables for the node
    * Instantiate hive-node (client), and write generated files to the node filesystem
    * The node will import blocks upon startup
