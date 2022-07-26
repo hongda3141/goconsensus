@@ -61,3 +61,49 @@ Onboarding a client into Hive is pretty simple:
 This repo is a rewrite of an older version which was implemented in python, and resides within the hive repository. 
 
 
+来自的翻译
+wenyanet.com/opensource/zh/5ff3d20baab356681355c0fd.html  
+
+广义测试
+在复仇标准的测试用例现在测试用例已经转变，使所有测试的体积可以表示为blocktests。该框架由以下部分组成。
+
+测试用例的来源。这些基本上是当前的测试用例（测试填充器）。它们包含每个测试的语义，并且可以例如包含要应用于状态的合同源代码或单个交易。这些测试应包含足够的信息，以便人类能够解释测试的含义以及如何调试失败的测试。
+
+测试用人工制品。这些是测试用例（测试填充器）的转换，格式如下：
+
+prestate
++
+block(s)
+=>
+postState
+。
+然后使用Hive执行跨客户端测试。蜂巢框架仅执行以下操作。
+
+对于每个客户端，对于每个测试用例：
+通过组合'pre'和'genesisBlockHeader'创建创世纪。
+根据测试用例（Frontier，Homestead，Tangerine或Spurious）创建规则集，并
+ENV
+为节点设置Hive变量
+实例化配置单元节点（客户端），并将生成的文件写入节点文件系统
+该节点将在启动时导入块
+使用标准Web3 API验证块（0）的前提条件
+使用标准Web3 API在块（n）处验证后置条件
+将测试用例发送给Hive
+此仓库负责汇总测试，告诉框架启动新客户端，然后验证结果，并报告给蜂巢，
+
+然后，Hive框架将结果报告输出为json文件，可以将其与HTML查看器和客户端日志打包在一起，以分析所有测试失败。
+
+这种方法的好处是，只要满足成为蜂巢节点的要求，就不需要客户端实现来创建定制的测试框架。基本上是：
+
+能够导入块。
+能够通过命令行/配置配置规则集。
+标准的web3方法（getBlock）。
+将客户端加入Hive非常简单：
+
+创建一个Docker文件（尽可能少）以安装客户端
+创建一个shell脚本，该脚本可以根据给定的
+ENV
+变量引导客户端。
+的
+ENV
+变量包含有关哪些规则集使用（前沿，宅地，橘子等）的信息。该脚本还负责从文件系统导入创始和块。
